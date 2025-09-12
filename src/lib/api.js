@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://notes-api-auth.vercel.app/";
 
 // Store token on login
 export async function login(email, password) {

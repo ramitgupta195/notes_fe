@@ -1,34 +1,34 @@
 "use client";
-
 import { useState } from "react";
-import { login } from "@/lib/api";
 import { useRouter } from "next/navigation";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { login, signup } from "@/lib/api"; // your API functions
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-export default function LoginPage() {
+export default function AuthPage() {
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await login(email, password);
-      const role = response.user.role;
-
-      if (role === "admin") {
-        router.push("/adminDashboard");
+      if (isLogin) {
+        const response = await login(email, password);
+        const role = response.user.role;
+        router.push(role === "admin" ? "/adminDashboard" : "/notes");
       } else {
-        router.push("/notes");
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+        }
+        const response = await signup(email, password, confirmPassword);
+        alert("Signup successful! Redirecting to your dashboard...");
+        const role = response.user.role;
+        router.push(role === "admin" ? "/adminDashboard" : "/notes");
       }
     } catch (err) {
       alert(err.message);
@@ -36,45 +36,69 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-h-screen flex items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-800 via-purple-900 to-blue-900 px-4">
+      <Card className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg text-white p-6">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">Login</CardTitle>
+          <CardTitle className="text-center text-2xl font-bold mb-2">
+            {isLogin ? "Welcome Back" : "Create Account"}
+          </CardTitle>
+          <p className="text-center text-sm text-white/80">
+            {isLogin ? "Login to your account" : "Sign up to get started"}
+          </p>
         </CardHeader>
-
-        <form onSubmit={handleSubmit}>
-          <CardContent className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
+        <CardContent>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2"
+            />
+            {!isLogin && (
+              <input
                 type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2"
               />
-            </div>
-          </CardContent>
+            )}
+            <button
+              type="submit"
+              className="w-full bg-white text-black font-semibold rounded-lg py-2 hover:opacity-90 transition"
+            >
+              {isLogin ? "Login" : "Sign Up"}
+            </button>
+          </form>
 
-          <CardFooter>
-            <Button type="submit" className="w-full">
-              Log In
-            </Button>
-          </CardFooter>
-        </form>
+          <div className="flex items-center justify-center gap-2 text-white/80 mt-4 text-sm">
+            <span>
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+            </span>
+            <button
+              type="button"
+              className="underline hover:opacity-80 "
+              onClick={() => setIsLogin(!isLogin)}
+            >
+              {isLogin ? "Sign Up" : "Login"}
+            </button>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-white/60 mt-4 text-sm">
+            <span>or continue with</span>
+          </div>
+        </CardContent>
       </Card>
     </div>
   );

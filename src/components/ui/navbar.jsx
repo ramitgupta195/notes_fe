@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   Menubar,
@@ -20,7 +20,7 @@ export default function Navbar() {
     console.log("User role from localStorage:", storedRole);
     setRole(storedRole);
   }, []);
-
+  const pathName = usePathname();
   const handleNavigation = (path) => router.push(path);
 
   const handleLogout = async () => {
@@ -32,7 +32,7 @@ export default function Navbar() {
       alert(err.message);
     }
   };
-
+  if (pathName === "/") return null; // Hide Navbar on login page
   return (
     <div className="flex items-center justify-between bg-background px-4 py-2 shadow-sm border-b">
       <div
