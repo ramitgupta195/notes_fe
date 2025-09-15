@@ -1,4 +1,9 @@
-const API_URL = "https://notes-api-auth.vercel.app/";
+// const API_URL = "http://localhost:3000";
+const API_URL = "https://notes-api-auth-e3q1.onrender.com";
+
+// ====================
+// Auth
+// ====================
 
 // Store token on login
 export async function login(email, password) {
@@ -37,16 +42,90 @@ export async function signup(email, password, password_confirmation) {
   return data;
 }
 
-// Auth headers
-function authHeaders() {
+// Logout user
+export async function logout() {
   const token = localStorage.getItem("token");
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
+  const res = await fetch(`${API_URL}/logout`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // Devise JWT expects this
+    },
+  });
+
+  if (!res.ok) throw new Error("Failed to logout");
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
 }
 
+// Get current user profile
+export async function getProfile() {
+  const res = await fetch(`${API_URL}/users/profile`, {
+    headers: authHeaders(),
+  });
+  if (!res.ok) throw new Error("Failed to fetch profile");
+  return res.json();
+}
+
+// Update current user profile
+export async function updateProfile(data) {
+  const res = await fetch(`${API_URL}/users/profile`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify({ user: data }),
+  });
+  if (!res.ok) throw new Error("Failed to update profile");
+  return res.json();
+}
+
+// ====================
+// User CRUD (Admin only)
+// ====================
+
+// Get all users
+export async function getUsers() {
+  const res = await fetch(`${API_URL}/admin/users`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Failed to fetch users");
+  return res.json();
+}
+
+// Create a new user (admin only)
+export async function createUser(user) {
+  const res = await fetch(`${API_URL}/admin/users`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({ user }),
+  });
+  if (!res.ok) throw new Error("Failed to create user");
+  return res.json();
+}
+
+// Delete a user
+export async function deleteUser(id) {
+  const res = await fetch(`${API_URL}/admin/users/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+  if (!res.ok) throw new Error("Failed to delete user");
+  return true;
+}
+
+// Update a user
+export async function updateUser(id, user) {
+  const res = await fetch(`${API_URL}/admin/users/${id}`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify({ user }),
+  });
+  if (!res.ok) throw new Error("Failed to update user");
+  return res.json();
+}
+
+// ====================
 // Notes CRUD
+// ====================
+
 export async function getNotes() {
   const res = await fetch(`${API_URL}/notes`, { headers: authHeaders() });
   if (!res.ok) throw new Error("Failed to fetch notes");
@@ -82,17 +161,14 @@ export async function deleteNote(id) {
   return true;
 }
 
-export async function logout() {
+// ====================
+// Helpers
+// ====================
+
+function authHeaders() {
   const token = localStorage.getItem("token");
-  const res = await fetch("http://localhost:3000/logout", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`, // must match Devise JWT
-    },
-  });
-
-  if (!res.ok) throw new Error("Failed to logout");
-
-  localStorage.removeItem("token");
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
 }

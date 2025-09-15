@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, signup } from "@/lib/api"; // your API functions
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { login, signup } from "@/lib/api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 export default function AuthPage() {
@@ -37,7 +35,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-800 via-purple-900 to-blue-900 px-4">
-      <Card className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg text-white p-6">
+      <Card className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-lg text-white p-6 transform transition-all duration-300 hover:scale-[1.02]">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold mb-2">
             {isLogin ? "Welcome Back" : "Create Account"}
@@ -54,7 +52,7 @@ export default function AuthPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2"
+              className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2 focus:ring-2 focus:ring-white/40 outline-none"
             />
             <input
               type="password"
@@ -62,7 +60,7 @@ export default function AuthPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2"
+              className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2 focus:ring-2 focus:ring-white/40 outline-none"
             />
             {!isLogin && (
               <input
@@ -71,12 +69,18 @@ export default function AuthPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2"
+                className="bg-white/20 placeholder-white text-white backdrop-blur-sm border border-white/30 rounded-lg px-4 py-2 focus:ring-2 focus:ring-white/40 outline-none"
               />
             )}
             <button
               type="submit"
-              className="w-full bg-white text-black font-semibold rounded-lg py-2 hover:opacity-90 transition"
+              className="w-full bg-white font-semibold rounded-lg py-2 hover:opacity-90 transition"
+              style={{
+                
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                color: "transparent",
+              }}
             >
               {isLogin ? "Login" : "Sign Up"}
             </button>
@@ -93,10 +97,6 @@ export default function AuthPage() {
             >
               {isLogin ? "Sign Up" : "Login"}
             </button>
-          </div>
-
-          <div className="flex items-center justify-center gap-2 text-white/60 mt-4 text-sm">
-            <span>or continue with</span>
           </div>
         </CardContent>
       </Card>
