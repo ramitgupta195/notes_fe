@@ -1,3 +1,5 @@
+# Notes Frontend
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -19,6 +21,29 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## What I Have Done
+
+- Implemented role-based navigation with dynamic tabs for admin and regular users.
+- Created dashboards for admin and general users.
+- Developed user profile management pages.
+- Built notes management pages with UI components.
+- Integrated API calls for authentication, user data, notes, and user management.
+- Used endpoints such as `/api/auth/login`, `/api/users`, `/api/notes`, and `/api/profile` for backend communication.
+- Designed the UI inspired by iOS26 Liquid Glass aesthetic, focusing on glassmorphism and smooth animations.
+
+## Features
+
+- Role-based access control and navigation.
+- User authentication and profile management.
+- Notes creation, editing, and listing.
+- Admin user management.
+- Responsive and visually appealing UI with animations.
+
+## Known Bugs and To Fix
+
+- The navigation behavior of the "Notes" button needs to be fixed to properly reflect the user's role.
+- Additional UI/UX improvements and bug fixes are planned.
 
 ## Learn More
 
