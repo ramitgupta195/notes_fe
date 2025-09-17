@@ -1,61 +1,64 @@
 # Notes Frontend
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This project is a **notes management frontend** built with **Next.js**, inspired by the iOS26 Liquid Glass design aesthetic. It focuses on **glassmorphism**, smooth animations, and responsive design.
 
-## Getting Started
+## Tech Stack & Libraries
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js** – React framework for server-side rendering and routing.
+- **React 18** – Core library for building UI components.
+- **Framer Motion** – For smooth animations and hover effects.
+- **Tailwind CSS** – Utility-first CSS framework for styling and responsive design.
+- **Next Navigation** – `useRouter` & `usePathname` for client-side routing.
+- **LocalStorage** – Storing user role and session info.
+- **Custom API Integration** – Auth, notes, users, and profile endpoints.
+- **Glassmorphism Design** – Frosted glass UI elements for modern aesthetics.
 
 ## What I Have Done
 
-- Implemented role-based navigation with dynamic tabs for admin and regular users.
-- Created dashboards for admin and general users.
-- Developed user profile management pages.
-- Built notes management pages with UI components.
-- Integrated API calls for authentication, user data, notes, and user management.
+- Implemented **role-based navigation** with dynamic tabs for admin and general users.
+- Developed **dashboards** tailored for admin and regular users.
+- Built **user profile management pages**.
+- Created **notes management pages** with UI components for listing, creating, and editing notes.
+- Integrated **API calls** for authentication, user data, notes, and user management.
 - Used endpoints such as `/api/auth/login`, `/api/users`, `/api/notes`, and `/api/profile` for backend communication.
-- Designed the UI inspired by iOS26 Liquid Glass aesthetic, focusing on glassmorphism and smooth animations.
+- Fixed **navbar hooks issue** and ensured role-based tabs render **without flicker**.
+- Added **animated dropdowns** and smooth hover effects with Framer Motion.
 
 ## Features
 
-- Role-based access control and navigation.
+- Role-based access control and dynamic navigation.
 - User authentication and profile management.
 - Notes creation, editing, and listing.
 - Admin user management.
-- Responsive and visually appealing UI with animations.
+- **Responsive and visually appealing UI** with glassmorphic styling and animations.
+- Stable and **bug-free hook usage** to prevent React rendering errors.
 
-## Known Bugs and To Fix
+## Usage Tips
 
-- The navigation behavior of the "Notes" button needs to be fixed to properly reflect the user's role.
-- Additional UI/UX improvements and bug fixes are planned.
+- **Testing User Roles**:
+  - To test **admin view**, set `role` in `localStorage` to `"admin"` before logging in.
+  - To test **regular user view**, set `role` in `localStorage` to `"user"` or leave it empty.
+- The navbar will **dynamically render tabs** based on the role:
+  - Admin: `Notes`, `Users`, `Account`
+  - Regular: `Notes`, `Account`
+- The **active tab** highlights automatically when navigating via the navbar.
+- Use the **Account dropdown** to access profile or logout.
+- Notes can be **created, edited, and listed** directly from the dashboard.
+- Refreshing the page preserves the role via `localStorage`.
 
-## Learn More
+## Known Issues / To Fix
 
-To learn more about Next.js, take a look at the following resources:
+- Minor UI tweaks for the "Notes" tab to properly reflect the active route.
+- Additional **UX improvements** and polishing of animation transitions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To run the development server:
 
-## Deploy on Vercel
+```bash
+npm install
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open http://localhost:3000
+in your browser to view the app.
