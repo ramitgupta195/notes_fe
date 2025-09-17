@@ -17,22 +17,24 @@ export default function Navbar() {
 
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
-    console.log("User role from localStorage:", storedRole);
     setRole(storedRole);
   }, []);
+
   const pathName = usePathname();
   const handleNavigation = (path) => router.push(path);
 
   const handleLogout = async () => {
     try {
       await logout();
-      localStorage.removeItem("role"); // remove role on logout
+      localStorage.removeItem("role");
       router.push("/login");
     } catch (err) {
       alert(err.message);
     }
   };
+
   if (pathName === "/") return null; // Hide Navbar on login page
+
   return (
     <div className="flex items-center justify-between bg-background px-4 py-2 shadow-sm border-b">
       <div
@@ -43,6 +45,7 @@ export default function Navbar() {
       </div>
 
       <Menubar>
+        {/* Notes */}
         <MenubarMenu>
           <MenubarTrigger>Notes</MenubarTrigger>
           <MenubarContent>
@@ -55,13 +58,11 @@ export default function Navbar() {
           </MenubarContent>
         </MenubarMenu>
 
+        {/* Users (Admin only) */}
         {role === "admin" && (
           <MenubarMenu>
             <MenubarTrigger>Users</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem onClick={() => handleNavigation("/users/create")}>
-                Create User
-              </MenubarItem>
               <MenubarItem onClick={() => handleNavigation("/users")}>
                 All Users
               </MenubarItem>
@@ -69,10 +70,18 @@ export default function Navbar() {
           </MenubarMenu>
         )}
 
+        {/* Account */}
         <MenubarMenu>
           <MenubarTrigger>Account</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem data-variant="destructive" onClick={handleLogout}>
+            <MenubarItem onClick={() => handleNavigation("/profile")}>
+              Profile
+            </MenubarItem>
+            <MenubarItem
+              data-variant="destructive"
+              onClick={handleLogout}
+              className="text-red-500"
+            >
               Logout
             </MenubarItem>
           </MenubarContent>
